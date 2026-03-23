@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid-Challenge</title>
+</head>
+<body>
+    <script>
+        // Task 1 — Log Compression System
+        // A system logs user events, but the data became too 
+        // large due to repeated consecutive actions. The company 
+        // wants to compress the logs by grouping consecutive 
+        // identical events and counting how many times they 
+        // occurred.
+
+        console.log("Task 1");
+        function logCompressionSystem(arr){
+            let eventIs= arr[0];
+            let count =0;
+            let newArr = [];
+            for (let i = 0; i < arr.length; i++) {
+                let currentEvent = arr[i].event;
+                if (eventIs == currentEvent){
+                    count ++;
+                }else{
+                    if (i!= 0){
+                        let newObj = {event: currentEvent , count : count};
+                        newArr.push(newObj);
+                    }
+                    count = 1;
+                    eventIs = currentEvent;
+                }
+                if (i == arr.length -1){
+                let newObj = {event: currentEvent , count : count};
+                newArr.push(newObj);           
+                }
+            }
+            return newArr;
+            
+        }
+
+        console.log(logCompressionSystem([{ event:"click", time:1 },
+        { event:"click", time:2 },{ event:"scroll", time:3 },
+        { event:"scroll", time:4 },{ event:"click", time:5 }]));
+
+
+        // Task 2 — Subarray with Given Sum
+        // A finance system records daily expenses. The management wants to 
+        // know if there is a continuous period where the total expense 
+        // equals a specific target.
+
+        console.log("Task 2");
+        function subarrayWithGivenSum(arr , target){
+            let start = 0;
+            let end ;
+            for (let i = 0; i < arr.length; i++) {
+                let sum =0;
+                for (var j = i; j < arr.length; j++) {
+                    if (sum < target){
+                        sum += arr[j];
+                    }else if( sum>= target){
+                        break;
+                    }
+                }
+                if (sum == Number(target)){
+                    start = i;
+                    end = j;
+                    break;
+                }
+            }
+            console.log (`start = ${start}`);
+            console.log(`end = ${end} `);
+        }
+        subarrayWithGivenSum([1,4,20,3,10,5], 33)
+
+
+        // Task3 — Maximum Profit
+        // You are tracking stock prices over time. You can buy once and 
+        // sell once (after buying). Your goal is to maximize profit.
+
+        console.log("Task 3");
+        function maximumProfit(arr){
+            let sell  ;
+            let buy = arr[0];
+            let profit = 0;
+
+            for (let i = 1; i < arr.length; i++) {
+                let currentProfit;
+                sell = arr[i];
+                currentProfit = sell - buy;
+                if (currentProfit > profit){
+                    profit = currentProfit;
+                }
+                if (sell < buy)
+                    buy = arr[i];
+
+            }
+            console.log (profit)
+            return (profit);
+        }
+        maximumProfit([7,1,5,3,6,4]);
+
+
+        // Task 4 — Trap Rain Water 
+        // Buildings have different heights, and when it rains, water gets 
+        // trapped between them. You need to calculate how much water is 
+        // stored.
+        
+        console.log("Task 4")
+        function trapRainWater(arr) {
+            let left = 0;
+            let right = arr.length - 1;
+            let leftMax = 0, rightMax = 0;
+            let water = 0;
+
+            while (left < right) {
+                if (arr[left] < arr[right]) {
+                    arr[left] >= leftMax ? (leftMax = arr[left]) : (water += leftMax - arr[left]);
+                    left++;
+                } else {
+                    arr[right] >= rightMax ? (rightMax = arr[right]) : (water += rightMax - arr[right]);
+                    right--;
+                }
+            }
+            console.log (water)
+            return water;
+        }
+        trapRainWater([0,1,0,2,1,0,1,3,2,1,2,1]);
+
+
+        // Task 5 — Longest Unique Subarray
+        // A user browsing log is recorded. You need to find the longest 
+        // continuous period where no value is repeated.
+        console.log("Task5")
+        function longestUniqueSubarray(arr) {
+            let lastSeen = {};
+            let start = 0;
+            let maxLen = 0;
+            let bestStart = 0;
+
+            for (let end = 0; end < arr.length; end++) {
+                let currentVal = arr[end];
+                if (lastSeen[currentVal] !== undefined && lastSeen[currentVal] >= start) {
+                    start = lastSeen[currentVal] + 1;
+                }
+                lastSeen[currentVal] = end;
+                let currentLen = end - start + 1;
+                if (currentLen > maxLen) {
+                    maxLen = currentLen;
+                    bestStart = start;
+                }
+            }
+            let result = [];
+            for (let i = 0; i < maxLen; i++) {
+                result[i] = arr[bestStart + i];
+            }
+
+            return result;
+        }
+        console.log(longestUniqueSubarray([1, 2, 3, 1, 2, 3, 4, 5]));
+    </script>
+</body>
+</html>
